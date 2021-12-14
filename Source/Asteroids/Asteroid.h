@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/StaticMeshComponent.h"
+
 #include "Asteroid.generated.h"
+
 
 UCLASS()
 class ASTEROIDS_API AAsteroid : public AActor
@@ -22,6 +25,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	// Test v2
 
+
+	UPROPERTY(BlueprintReadonly)
+		UMeshComponent* AsteroidMesh; // The mesh of the asteroid
+	
+	FRotator RotationSpeed;
 };
