@@ -39,9 +39,7 @@ void UPlayerShipEngineComponent::UpdateThrustOutput(float DeltaTime)
 		return;
 	}
 	
-
 	// Check for increase or decrease of thrust
-	
 	if (CurrentThrust < TargetThrust)
 	{	// Increase output thrust
 		CurrentThrust += ThrustChange;
