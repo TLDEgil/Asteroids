@@ -34,8 +34,13 @@ public:
 	// Engine component and it's related functions
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UPlayerShipEngineComponent* EngineComponent;
+
 	float GetThrust() const;
-	void SetThrust(float NewThrust);
+	void SetTargetThrust(float NewThrust);
+
+	void SetPitchAxis(float PitchAxis);
+	void SetYawAxis(float YawAxis);
+	void SetRollAxis(float RollAxis);
 
 	float GetMaxThrust() const;
 	void SetMaxThrust(float NewMaxThrust);

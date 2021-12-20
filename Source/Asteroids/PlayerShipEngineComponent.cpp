@@ -28,7 +28,6 @@ void UPlayerShipEngineComponent::BeginPlay()
 
 void UPlayerShipEngineComponent::UpdateThrustOutput(float DeltaTime)
 {	
-	UE_LOG(LogTemp, Warning, TEXT("CurrentThrust: %f \tTargetThrust: %f"), CurrentThrust, TargetThrust);
 	if(DeltaTime < KINDA_SMALL_NUMBER) return; // Checking to quickly
 
 	// If close enough to target thrust, skip all the calculations
@@ -52,8 +51,7 @@ void UPlayerShipEngineComponent::UpdateThrustOutput(float DeltaTime)
 		CurrentThrust -= ThrustChange;
 		if (CurrentThrust < -MaxThrust)
 			CurrentThrust = -MaxThrust;
-	}
-	
+	}	
 }
 
 

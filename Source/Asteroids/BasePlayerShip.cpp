@@ -40,7 +40,10 @@ void ABasePlayerShip::Tick(float DeltaTime)
 void ABasePlayerShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	PlayerInputComponent->BindAxis("PitchAxisInput", this, &ABasePlayerShip::SetPitchAxis);
+	PlayerInputComponent->BindAxis("YawAxisInput", this, &ABasePlayerShip::SetYawAxis);
+	PlayerInputComponent->BindAxis("RollAxisInput", this, &ABasePlayerShip::SetRollAxis);
+	PlayerInputComponent->BindAxis("ThrustAxisInput", this, &ABasePlayerShip::SetTargetThrust);
 }
 
 float ABasePlayerShip::GetBaseMass() const
@@ -58,9 +61,24 @@ float ABasePlayerShip::GetThrust() const
 	return EngineComponent->GetThrust();
 }
 
-void ABasePlayerShip::SetThrust(float NewThrust)
+void ABasePlayerShip::SetTargetThrust(float NewThrust)
 {
 	EngineComponent->SetTargetThrust(NewThrust);
+}
+
+void ABasePlayerShip::SetPitchAxis(float PitchAxis)
+{
+	MovementComponent->SetPitch(PitchAxis);
+}
+
+void ABasePlayerShip::SetYawAxis(float YawAxis)
+{
+	MovementComponent->SetYaw(YawAxis);
+}
+
+void ABasePlayerShip::SetRollAxis(float RollAxis)
+{
+	MovementComponent->SetRoll(RollAxis);
 }
 
 float ABasePlayerShip::GetMaxThrust() const
