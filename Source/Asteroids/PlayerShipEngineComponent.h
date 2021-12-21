@@ -38,9 +38,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		float CurrentThrust; // How much thrust is currently being produced in Newtons
 	UPROPERTY(EditAnywhere)
-		float MaxThrust; // Maximum thrust that can be produced in Newtons
+		float MaxThrust = 150000; // Maximum thrust that can be produced in Newtons
 	UPROPERTY(EditAnywhere)
-		float ThrustChangeSpeed; // How much can the thrust change in one second
+		float ThrustChangeSpeed = 8000; // How much can the thrust change in one second
 	UPROPERTY(EditAnywhere)
 		float TargetThrust; // What is the trust we want to output
 

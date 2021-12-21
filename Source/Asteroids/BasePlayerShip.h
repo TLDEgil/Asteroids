@@ -57,7 +57,7 @@ protected:
 
 private:
 	UPROPERTY(EditAnywhere)
-		float BaseMass; // Mass in KG
+		float BaseMass = 30000; // Mass in KG
 
 
 };

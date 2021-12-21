@@ -35,6 +35,7 @@ void UPlayerShipMovementComponent::TickComponent(float DeltaTime, ELevelTick Tic
 
 	UpdateValues(DeltaTime);
 	LastMove = CreateMove(DeltaTime);
+	SimulateMove(LastMove);
 	ApplyMovement(LastMove);
 	ApplyRotation(LastMove);
 }
@@ -89,6 +90,7 @@ FPlayerShipMove UPlayerShipMovementComponent::CreateMove(float DeltaTime)
 
 void UPlayerShipMovementComponent::SimulateMove(const FPlayerShipMove& Move)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Engine Thrust: %f"), EngineComponent->GetThrust());
 	FVector AppliedForce = GetOwner()->GetActorForwardVector() * EngineComponent->GetThrust();
 	FVector Acceleration = AppliedForce / Cast<ABasePlayerShip>(GetOwner())->GetBaseMass();
 	Velocity += Acceleration * Move.DeltaTime;
@@ -112,13 +114,14 @@ void UPlayerShipMovementComponent::ApplyMovement(const FPlayerShipMove& Move)
 void UPlayerShipMovementComponent::ApplyRotation(const FPlayerShipMove& Move)
 {
 	// Get the angles of rotation
-	float PitchRotationAngle = CurrentPitchRate * Move.DeltaTime;
-	float YawRotationAngle = CurrentYawRate * Move.DeltaTime;
-	float RollRotationAngle = CurrentRollRate * Move.DeltaTime;
+	float PitchRotationAngle	= CurrentPitchRate	* Move.DeltaTime;
+	float YawRotationAngle		= CurrentYawRate	* Move.DeltaTime;
+	float RollRotationAngle		= CurrentRollRate	* Move.DeltaTime;
+
 	// Figure this out yourself. My head hurts too much now.
-	FQuat PitchRotationDelta(GetOwner()->GetActorRightVector(), FMath::DegreesToRadians(PitchRotationAngle));
-	FQuat YawRotationDelta(GetOwner()->GetActorUpVector(), FMath::DegreesToRadians(YawRotationAngle));
-	FQuat RollRotationDelta(GetOwner()->GetActorForwardVector(), FMath::DegreesToRadians(RollRotationAngle));
+	FQuat PitchRotationDelta(GetOwner()->GetActorRightVector(),	FMath::DegreesToRadians(PitchRotationAngle));
+	FQuat YawRotationDelta(GetOwner()->GetActorUpVector(),		FMath::DegreesToRadians(YawRotationAngle));
+	FQuat RollRotationDelta(GetOwner()->GetActorForwardVector(),FMath::DegreesToRadians(RollRotationAngle));
 
 	// Apply the hard won quats to rotation
 	GetOwner()->AddActorWorldRotation(PitchRotationDelta);

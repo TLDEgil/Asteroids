@@ -78,15 +78,15 @@ private:
 	UPROPERTY()
 		float CurrentPitchRate;
 	UPROPERTY()
-		float PitchRateIncrease = 30; // Rate pitch increase in degrees/second
+		float PitchRateIncrease = 90; // Rate pitch increase in degrees/second
 	UPROPERTY()
 		float CurrentYawRate;
 	UPROPERTY()
-		float YawRateIncrease = 30; // Rate yaw increase in degrees/second
+		float YawRateIncrease = 90; // Rate yaw increase in degrees/second
 	UPROPERTY()
 		float CurrentRollRate;
 	UPROPERTY()
-		float RollRateIncrease = 30; // Rate roll increase in degrees/second
+		float RollRateIncrease = 90; // Rate roll increase in degrees/second
 
 	UPROPERTY()
 		float Pitch; // How much pitch acceleration is being used on a scale of -1.0f to 1.0f

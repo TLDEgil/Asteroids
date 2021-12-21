@@ -37,6 +37,11 @@ void UPlayerShipEngineComponent::UpdateThrustOutput(float DeltaTime)
 		CurrentThrust = TargetThrust;
 		return;
 	}
+	// If engine should not be producing thrust
+	if (fabs(TargetThrust) < KINDA_SMALL_NUMBER)
+	{
+		ThrustChange = 0.0f;
+	}
 	
 	// Check for increase or decrease of thrust
 	if (CurrentThrust < TargetThrust)
@@ -80,7 +85,7 @@ float UPlayerShipEngineComponent::GetTargetThrust() const
 
 void UPlayerShipEngineComponent::SetTargetThrust(float NewTargetThrust)
 {
-	TargetThrust = NewTargetThrust;
+	TargetThrust = NewTargetThrust * MaxThrust;
 }
 
 float UPlayerShipEngineComponent::GetMaxThrust() const
