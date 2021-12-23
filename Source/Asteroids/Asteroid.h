@@ -30,5 +30,5 @@ public:
 	UPROPERTY(BlueprintReadonly)
 		UMeshComponent* AsteroidMesh; // The mesh of the asteroid
 	
-	FRotator RotationSpeed;
+	int XRotationSpeed, YRotationSpeed, ZRotationSpeed;
 };
