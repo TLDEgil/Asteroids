@@ -1,0 +1,58 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Components/ActorComponent.h"
+#include "BaseBullet.h"
+#include "BasePlayerShipGun.generated.h"
+
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class ASTEROIDS_API UBasePlayerShipGun : public UActorComponent
+{
+	GENERATED_BODY()
+
+public:	
+	// Sets default values for this component's properties
+	UBasePlayerShipGun();
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	int GetRateOfFire();
+	void SetRateOfFire(int NewRateOfFire);
+
+	float GetBulletVelocity();
+	void SetBulletVelocity(float NewBulletVelocity);
+
+	float GetBulletDamage();
+	void SetBulletDamage(float NewBulletDamage);
+
+	float GetBulletRange();
+	void SetBulletRange(float NewBulletRange);
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
+
+private:	
+	UPROPERTY()
+		TArray<ABaseBullet*> Bullets; // Array of all active bullets 
+
+	UPROPERTY(EditDefaultsOnly)
+		int ROF = 60; // Rate Of Fire, in rounds per minute
+	float CurrentFireDelay = 0.0f; // Time left in seconds until the next round can be fired
+	float FireDelay = 1.0f; // How much time in seconds must pass betwen each round
+
+	UPROPERTY(EditDefaultsOnly)
+		float BulletSpeed = 1000; // Speed in M/s
+
+	UPROPERTY(EditDefaultsOnly)
+		float BulletDamage = 100; // Damage
+
+	UPROPERTY(EditDefaultsOnly)
+		float BulletRange; // Range in KM
+
+
+		
+};

@@ -7,6 +7,7 @@
 #include "PlayerShipMovementComponent.h"
 #include "PlayerShipReplicationComponent.h"
 #include "PlayerShipEngineComponent.h"
+#include "BasePlayerShipGun.h"
 
 #include "BasePlayerShip.generated.h"
 
@@ -50,6 +51,22 @@ public:
 
 	float GetBaseMass() const;
 	void SetBaseMass(float NewBaseMass);
+
+	// GunComponent and it's related functions
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		UBasePlayerShipGun* WeaponSystem;
+
+	int GetRateOfFire();
+	void SetRateOfFire(int NewRateOfFire);
+
+	float GetBulletVelocity();
+	void SetBulletVelocity(float NewBulletVelocity);
+
+	float GetBulletDamage();
+	void SetBulletDamage(float NewBulletDamage);
+
+	float GetBulletRange();
+	void SetBulletRange(float NewBulletRange);
 
 protected:
 	// Called when the game starts or when spawned
