@@ -41,6 +41,7 @@ void UPlayerShipEngineComponent::UpdateThrustOutput(float DeltaTime)
 	if (fabs(TargetThrust) < KINDA_SMALL_NUMBER)
 	{
 		ThrustChange = 0.0f;
+		return;
 	}
 	
 	// Check for increase or decrease of thrust

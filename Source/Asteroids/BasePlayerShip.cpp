@@ -14,8 +14,8 @@ ABasePlayerShip::ABasePlayerShip()
 
 	MovementComponent		= CreateDefaultSubobject<UPlayerShipMovementComponent>(TEXT("Movement Component"));
 	ReplicationComponent	= CreateDefaultSubobject<UPlayerShipReplicationComponent>(TEXT("Replication Component"));
-	EngineComponent			= CreateDefaultSubobject<UPlayerShipEngineComponent>(TEXT("Engine Compoennt"));
-	WeaponSystem			= CreateDefaultSubobject<UBasePlayerShipGun>(TEXT("Weapon Component"));
+	EngineComponent			= CreateDefaultSubobject<UPlayerShipEngineComponent>(TEXT("Engine Component"));
+	WeaponSystem			= CreateDefaultSubobject<UBasePlayerShipGun>(TEXT("Weapon System"));
 
 	// Check if all the subcomponents were created properly
 	if (!MovementComponent)		UE_LOG(LogTemp, Error, TEXT("Failed to create MovementComponent on %s"), *GetName());
@@ -47,6 +47,7 @@ void ABasePlayerShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("YawAxisInput", this, &ABasePlayerShip::SetYawAxis);
 	PlayerInputComponent->BindAxis("RollAxisInput", this, &ABasePlayerShip::SetRollAxis);
 	PlayerInputComponent->BindAxis("ThrustAxisInput", this, &ABasePlayerShip::SetTargetThrust);
+	PlayerInputComponent->BindAxis("FireGunAxis", this, &ABasePlayerShip::Fire);
 }
 
 float ABasePlayerShip::GetBaseMass() const
@@ -117,6 +118,18 @@ void ABasePlayerShip::SetThrustChangeSpeed(float NewThrustChangeSpeed)
 		return;
 	}
 	EngineComponent->SetThrustChangeSpeed(NewThrustChangeSpeed);
+}
+
+void ABasePlayerShip::Fire(float Fire)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("FireAxisInput: %f"), Fire);
+	if (!WeaponSystem)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid WeaponSystem on %s"), *GetName());
+		return;
+	}
+	if(Fire > KINDA_SMALL_NUMBER) 
+	WeaponSystem->Fire();
 }
 
 int ABasePlayerShip::GetRateOfFire()

@@ -17,6 +17,7 @@ UBasePlayerShipGun::UBasePlayerShipGun()
 void UBasePlayerShipGun::BeginPlay()
 {
 	Super::BeginPlay();
+	SetRateOfFire(ROF);
 
 	// ...
 }
@@ -26,7 +27,22 @@ void UBasePlayerShipGun::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	CurrentFireDelay -= DeltaTime;
+}
+
+void UBasePlayerShipGun::Fire()
+{
+	if (CurrentFireDelay < 0)
+	{
+		FVector Location = GetOwner()->GetActorLocation();
+		FRotator Rotation = GetOwner()->GetActorRotation();
+		ABaseBullet* Bullet = GetWorld()->SpawnActor<ABaseBullet>(Location, Rotation);
+		Bullet->SetData(BulletRange, BulletSpeed, BulletDamage, GetOwner()->GetActorForwardVector());
+		Bullets.Add(Bullet);
+		CurrentFireDelay = 0.0f + FireDelay;
+		NextBulletID++;
+		UE_LOG(LogTemp, Warning, TEXT("Bang: %i"), NextBulletID);
+	}
 }
 
 int UBasePlayerShipGun::GetRateOfFire()
@@ -37,7 +53,8 @@ int UBasePlayerShipGun::GetRateOfFire()
 void UBasePlayerShipGun::SetRateOfFire(int NewRateOfFire)
 {
 	ROF = NewRateOfFire;
-	FireDelay = ROF / 60.0f;
+	FireDelay = 60.f / NewRateOfFire;
+	CurrentFireDelay = FireDelay;
 }
 
 float UBasePlayerShipGun::GetBulletVelocity()

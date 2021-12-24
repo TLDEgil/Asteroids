@@ -19,6 +19,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	void Fire();
+
 	int GetRateOfFire();
 	void SetRateOfFire(int NewRateOfFire);
 
@@ -37,20 +39,21 @@ protected:
 
 private:	
 	UPROPERTY()
-		TArray<ABaseBullet*> Bullets; // Array of all active bullets 
+		TArray<ABaseBullet*> Bullets; // Array of all active bullets
+	unsigned int NextBulletID = 0;
 
-	UPROPERTY(EditDefaultsOnly)
-		int ROF = 60; // Rate Of Fire, in rounds per minute
+	UPROPERTY(EditAnywhere)
+		int ROF = 5000; // Rate Of Fire, in rounds per minute
 	float CurrentFireDelay = 0.0f; // Time left in seconds until the next round can be fired
 	float FireDelay = 1.0f; // How much time in seconds must pass betwen each round
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 		float BulletSpeed = 1000; // Speed in M/s
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 		float BulletDamage = 100; // Damage
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere)
 		float BulletRange; // Range in KM
 
 

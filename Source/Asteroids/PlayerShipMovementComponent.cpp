@@ -90,7 +90,7 @@ FPlayerShipMove UPlayerShipMovementComponent::CreateMove(float DeltaTime)
 
 void UPlayerShipMovementComponent::SimulateMove(const FPlayerShipMove& Move)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Engine Thrust: %f"), EngineComponent->GetThrust());
+	//UE_LOG(LogTemp, Warning, TEXT("Engine Thrust: %f"), EngineComponent->GetThrust());
 	FVector AppliedForce = GetOwner()->GetActorForwardVector() * EngineComponent->GetThrust();
 	FVector Acceleration = AppliedForce / Cast<ABasePlayerShip>(GetOwner())->GetBaseMass();
 	Velocity += Acceleration * Move.DeltaTime;

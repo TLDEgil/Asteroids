@@ -56,6 +56,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		UBasePlayerShipGun* WeaponSystem;
 
+	void Fire(float Fire);
+
 	int GetRateOfFire();
 	void SetRateOfFire(int NewRateOfFire);
 
