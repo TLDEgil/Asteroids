@@ -26,6 +26,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:	
+	void Move(float DeltaTime);
+
 	UPROPERTY()
 		FTransform Location;
 
@@ -38,5 +40,4 @@ private:
 
 	UPROPERTY()
 		float Damage; // How much damage does the bullet do on impact
-
 };

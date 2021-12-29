@@ -37,9 +37,10 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-private:	
-	UPROPERTY()
-		TArray<ABaseBullet*> Bullets; // Array of all active bullets
+private:
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<ABaseBullet> BulletToFire = nullptr;
+
 	unsigned int NextBulletID = 0;
 
 	UPROPERTY(EditAnywhere)
@@ -48,13 +49,13 @@ private:
 	float FireDelay = 1.0f; // How much time in seconds must pass betwen each round
 
 	UPROPERTY(EditAnywhere)
-		float BulletSpeed = 1000; // Speed in M/s
+		float BulletSpeed = 100; // Speed in M/s
 
 	UPROPERTY(EditAnywhere)
 		float BulletDamage = 100; // Damage
 
 	UPROPERTY(EditAnywhere)
-		float BulletRange; // Range in KM
+		float BulletRange = 2; // Range in KM
 
 
 		

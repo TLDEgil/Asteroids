@@ -18,16 +18,34 @@ void ABaseBullet::BeginPlay()
 	
 }
 
+void ABaseBullet::Move(float DeltaTime)
+{
+	FVector Translation = Forwards * DeltaTime * Velocity * 100;
+	Range -= Velocity * DeltaTime * 100;
+	FHitResult Hit;
+	AddActorWorldOffset(Translation, true, &Hit);
+
+	if (Hit.IsValidBlockingHit())
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Impact"));
+		Destroy();
+	}
+	if (Range < 0)
+	{
+		Destroy();
+	}
+}
+
 // Called every frame
 void ABaseBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	Move(DeltaTime);
 }
 
 void ABaseBullet::SetData(float ArgRange, float ArgVelocity, float ArgDamage, FVector ArgForwards)
 {
-	Range = ArgRange;
+	Range = ArgRange * 1000;
 	Velocity = ArgVelocity;
 	Damage = ArgDamage;
 	Forwards = ArgForwards;

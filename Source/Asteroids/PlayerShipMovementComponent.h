@@ -74,18 +74,19 @@ private:
 
 	FPlayerShipMove LastMove;
 	FVector Velocity;	
+	float MaxSpeed = 30;
 
 	UPROPERTY()
 		float CurrentPitchRate;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 		float PitchRateIncrease = 90; // Rate pitch increase in degrees/second
 	UPROPERTY()
 		float CurrentYawRate;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 		float YawRateIncrease = 90; // Rate yaw increase in degrees/second
 	UPROPERTY()
 		float CurrentRollRate;
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 		float RollRateIncrease = 90; // Rate roll increase in degrees/second
 
 	UPROPERTY()

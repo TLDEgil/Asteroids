@@ -48,7 +48,7 @@ void UPlayerShipMovementComponent::UpdateValues(float DeltaTime)
 		if (CurrentPitchRate > 0) CurrentPitchRate -= PitchRateIncrease * DeltaTime;
 		else CurrentPitchRate += PitchRateIncrease * DeltaTime;
 		
-		if (fabs(CurrentPitchRate) < PitchRateIncrease + KINDA_SMALL_NUMBER) CurrentPitchRate = 0.0f;
+		if (fabs(CurrentPitchRate) < (PitchRateIncrease*DeltaTime) + KINDA_SMALL_NUMBER) CurrentPitchRate = 0.0f;
 	}
 
 	if (Yaw) CurrentYawRate += Yaw * YawRateIncrease * DeltaTime;
@@ -57,7 +57,7 @@ void UPlayerShipMovementComponent::UpdateValues(float DeltaTime)
 		if (CurrentYawRate > 0) CurrentYawRate -= YawRateIncrease * DeltaTime;
 		else CurrentYawRate += YawRateIncrease * DeltaTime;
 
-		if (fabs(CurrentYawRate) < YawRateIncrease + KINDA_SMALL_NUMBER) CurrentYawRate = 0.0f;
+		if (fabs(CurrentYawRate) < (YawRateIncrease * DeltaTime) + KINDA_SMALL_NUMBER) CurrentYawRate = 0.0f;
 	}
 
 	if (Roll) CurrentRollRate += Roll * RollRateIncrease * DeltaTime;
@@ -66,7 +66,7 @@ void UPlayerShipMovementComponent::UpdateValues(float DeltaTime)
 		if (CurrentRollRate > 0) CurrentRollRate -= RollRateIncrease * DeltaTime;
 		else CurrentRollRate += RollRateIncrease * DeltaTime;
 
-		if (fabs(CurrentRollRate) < RollRateIncrease + KINDA_SMALL_NUMBER) CurrentRollRate = 0.0f;
+		if (fabs(CurrentRollRate) < (RollRateIncrease * DeltaTime) + KINDA_SMALL_NUMBER) CurrentRollRate = 0.0f;
 	}
 }
 
@@ -101,6 +101,8 @@ void UPlayerShipMovementComponent::SimulateMove(const FPlayerShipMove& Move)
 void UPlayerShipMovementComponent::ApplyMovement(const FPlayerShipMove& Move)
 {
 	FVector Translation = Velocity * Move.DeltaTime * 100;
+	Translation = Translation.GetClampedToMaxSize(MaxSpeed);
+	UE_LOG(LogTemp, Warning, TEXT("Current Ship Speed: %f"), Translation.Size());
 	FHitResult Hit;
 	GetOwner()->AddActorWorldOffset(Translation, true, &Hit);
 
