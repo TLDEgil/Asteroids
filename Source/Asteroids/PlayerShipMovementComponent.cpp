@@ -102,7 +102,7 @@ void UPlayerShipMovementComponent::ApplyMovement(const FPlayerShipMove& Move)
 {
 	FVector Translation = Velocity * Move.DeltaTime * 100;
 	Translation = Translation.GetClampedToMaxSize(MaxSpeed);
-	UE_LOG(LogTemp, Warning, TEXT("Current Ship Speed: %f"), Translation.Size());
+	//UE_LOG(LogTemp, Warning, TEXT("Current Ship Speed: %f"), Translation.Size());
 	FHitResult Hit;
 	GetOwner()->AddActorWorldOffset(Translation, true, &Hit);
 

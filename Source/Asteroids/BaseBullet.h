@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "BaseBullet.generated.h"
 
 
@@ -19,7 +20,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void SetData(float ArgRange, float ArgVelocity, float ArgDamage, FVector ArgForwards);
+	void SetData(float ArgRange, float ArgVelocity, float ArgDamage, FVector ArgInheritedVelocity, FVector ArgForwards);
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,6 +38,7 @@ private:
 	UPROPERTY()
 		float Range; // Range in KM before bullet gets deleted
 	FVector Forwards;
+	FVector InheritedVelocity; // Velocity parent had when firing the projectile
 
 	UPROPERTY()
 		float Damage; // How much damage does the bullet do on impact

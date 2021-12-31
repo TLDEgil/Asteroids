@@ -30,7 +30,7 @@ void UBasePlayerShipGun::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	CurrentFireDelay -= DeltaTime;
 }
 
-void UBasePlayerShipGun::Fire()
+void UBasePlayerShipGun::Fire(FVector InheritedVelocity)
 {
 	if (CurrentFireDelay < 0) // If can fire again
 	{
@@ -40,10 +40,10 @@ void UBasePlayerShipGun::Fire()
 			UE_LOG(LogTemp, Error, TEXT("WeaponSystem on %s has no bullet set"), *GetOwner()->GetName());
 			return;
 		}
-		FVector Location = GetOwner()->GetActorLocation(); // create a bullet
-		FRotator Rotation = GetOwner()->GetActorRotation();
-		ABaseBullet* Bullet = GetWorld()->SpawnActor<ABaseBullet>(BulletToFire, GetOwner()->GetActorTransform()); 
-		Bullet->SetData(BulletRange, BulletSpeed, BulletDamage, GetOwner()->GetActorForwardVector());
+		ABaseBullet * Bullet = GetWorld()->SpawnActor<ABaseBullet>(BulletToFire, GetOwner()->GetActorTransform());
+		Bullet->SetData(BulletRange, BulletSpeed, BulletDamage, InheritedVelocity, GetOwner()->GetActorForwardVector());
+		Bullet->AddActorLocalOffset(FireLocation);
+		Bullets.Add(Bullet);
 		CurrentFireDelay = 0.0f + FireDelay;
 		NextBulletID++;
 		UE_LOG(LogTemp, Warning, TEXT("Bang: %i"), NextBulletID);

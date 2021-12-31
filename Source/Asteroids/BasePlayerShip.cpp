@@ -128,8 +128,13 @@ void ABasePlayerShip::Fire(float Fire)
 		UE_LOG(LogTemp, Error, TEXT("Invalid WeaponSystem on %s"), *GetName());
 		return;
 	}
+	if (!MovementComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid MovementComponent on %s"), *GetName());
+		return;
+	}
 	if(Fire > KINDA_SMALL_NUMBER) 
-	WeaponSystem->Fire();
+	WeaponSystem->Fire(MovementComponent->GetVelocity());
 }
 
 int ABasePlayerShip::GetRateOfFire()
