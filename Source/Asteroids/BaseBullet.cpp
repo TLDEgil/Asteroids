@@ -2,6 +2,7 @@
 
 
 #include "BaseBullet.h"
+#include "Asteroid.h"
 
 // Sets default values
 ABaseBullet::ABaseBullet()
@@ -19,6 +20,8 @@ void ABaseBullet::BeginPlay()
 
 void ABaseBullet::Move(float DeltaTime)
 {
+	if (IsActorBeingDestroyed()) return;
+
 	FVector Translation = Forwards * DeltaTime * Velocity * 100;
 	Translation += InheritedVelocity * DeltaTime * 100;
 	Range -= Translation.Size();
@@ -27,12 +30,24 @@ void ABaseBullet::Move(float DeltaTime)
 
 	if (Hit.IsValidBlockingHit())
 	{	
-		UE_LOG(LogTemp, Warning, TEXT("Impact"));
-		//Destroy();
+		//UE_LOG(LogTemp, Warning, TEXT("Impact"));
+		Destroy();
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit %s"), *HitActor->GetName());
+			if (HitActor->IsA(AAsteroid::StaticClass()))
+			{
+				//UE_LOG(LogTemp, Warning, TEXT("Hit Asteroid"));
+				Cast<AAsteroid>(HitActor)->RegisterHitFromBullet(Damage);
+			}
+		}
+		return; // ???? Why do I need this?????
 	}
 	if (Range < 0)
 	{
-		//Destroy();
+		Destroy();
+		
 	}
 }
 
