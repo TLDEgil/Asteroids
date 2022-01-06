@@ -46,6 +46,8 @@ public:
 	float GetMaxThrust() const;
 	void SetMaxThrust(float NewMaxThrust);
 
+	float GetCurrentThrust() const;
+
 	float GetThrustChangeSpeed() const;
 	void SetThrustChangeSpeed(float NewThrustChangeSpeed);
 
@@ -58,17 +60,25 @@ public:
 
 	void Fire(float Fire);
 
-	int GetRateOfFire();
+	int GetRateOfFire() const;
 	void SetRateOfFire(int NewRateOfFire);
 
-	float GetBulletVelocity();
+	float GetBulletVelocity() const;
 	void SetBulletVelocity(float NewBulletVelocity);
 
-	float GetBulletDamage();
+	float GetBulletDamage() const;
 	void SetBulletDamage(float NewBulletDamage);
 
-	float GetBulletRange();
+	float GetBulletRange() const;
 	void SetBulletRange(float NewBulletRange);
+
+	// Health and it's related unctions
+	float GetMaxHealth() const;
+	void SetMaxHealth(float NewMaxHealth);
+
+	float GetCurrentHealth() const;
+	void ChangeCurrentHealth(float Change);
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -78,5 +88,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		float BaseMass = 30000; // Mass in KG
 
-
+	UPROPERTY(EditAnywhere)
+		float MaxHealth;
+	UPROPERTY(EditAnywhere)
+		float CurrentHealth;
 };

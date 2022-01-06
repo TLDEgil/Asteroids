@@ -22,6 +22,9 @@ ABasePlayerShip::ABasePlayerShip()
 	if (!ReplicationComponent)	UE_LOG(LogTemp, Error, TEXT("Failed to create ReplicationComponent on %s"), *GetName());
 	if (!EngineComponent)		UE_LOG(LogTemp, Error, TEXT("Failed to create EngineComponent on %s"), *GetName());
 	if (!WeaponSystem)			UE_LOG(LogTemp, Error, TEXT("Failed to create WeaponSystem on %s"), *GetName());
+
+	ReplicationComponent->SetIsReplicated(true);
+	bReplicates = true;
 }
 
 
@@ -29,14 +32,20 @@ ABasePlayerShip::ABasePlayerShip()
 void ABasePlayerShip::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	// All movement replication should be handled by the replication component
+	SetReplicateMovement(false);
+
+	if (HasAuthority())
+	{
+		NetUpdateFrequency = 1;
+	}
 }
 
 // Called every frame
 void ABasePlayerShip::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -100,6 +109,16 @@ void ABasePlayerShip::SetMaxThrust(float NewMaxThrust)
 	EngineComponent->SetMaxThrust(NewMaxThrust);
 }
 
+float ABasePlayerShip::GetCurrentThrust() const
+{
+	if (!EngineComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Invalid EngineComponent on %s"), *GetName());
+		return 0.0f;
+	}
+	return EngineComponent->GetThrust();
+}
+
 float ABasePlayerShip::GetThrustChangeSpeed() const
 {
 	if (!EngineComponent)
@@ -137,7 +156,7 @@ void ABasePlayerShip::Fire(float Fire)
 	WeaponSystem->Fire(MovementComponent->GetVelocity());
 }
 
-int ABasePlayerShip::GetRateOfFire()
+int ABasePlayerShip::GetRateOfFire() const
 {
 	if (!WeaponSystem)
 	{
@@ -157,7 +176,7 @@ void ABasePlayerShip::SetRateOfFire(int NewRateOfFire)
 	WeaponSystem->SetRateOfFire(NewRateOfFire);
 }
 
-float ABasePlayerShip::GetBulletVelocity()
+float ABasePlayerShip::GetBulletVelocity() const
 {
 	if (!WeaponSystem)
 	{
@@ -177,7 +196,7 @@ void ABasePlayerShip::SetBulletVelocity(float NewBulletVelocity)
 	WeaponSystem->SetBulletVelocity(NewBulletVelocity);
 }
 
-float ABasePlayerShip::GetBulletDamage()
+float ABasePlayerShip::GetBulletDamage() const
 {
 	if (!WeaponSystem)
 	{
@@ -197,7 +216,7 @@ void ABasePlayerShip::SetBulletDamage(float NewBulletDamage)
 	WeaponSystem->SetBulletDamage(NewBulletDamage);
 }
 
-float ABasePlayerShip::GetBulletRange()
+float ABasePlayerShip::GetBulletRange() const
 {
 	if (!WeaponSystem)
 	{
@@ -245,4 +264,24 @@ void ABasePlayerShip::SetRollAxis(float RollAxis)
 		return;
 	}
 	MovementComponent->SetRoll(RollAxis);
+}
+
+float ABasePlayerShip::GetMaxHealth() const
+{
+	return CurrentHealth;
+}
+
+void ABasePlayerShip::SetMaxHealth(float NewMaxHealth)
+{
+	MaxHealth = NewMaxHealth;
+}
+
+float ABasePlayerShip::GetCurrentHealth() const
+{
+	return CurrentHealth;
+}
+
+void ABasePlayerShip::ChangeCurrentHealth(float Change)
+{
+	CurrentHealth += Change;
 }

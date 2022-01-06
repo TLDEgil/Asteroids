@@ -20,9 +20,11 @@ struct FPlayerShipMove
 	UPROPERTY()
 		float RollRate; // Rate the ship is currently rolling at
 	UPROPERTY()
-		float Throttle; // What the ship's throttle is currently set to
+		float Thrust; // What thrust is the engine currently producing
 	UPROPERTY()
-		FTransform Location; // Ship transform
+		FVector Velocity; // What the ship's throttle is currently set to
+	UPROPERTY()
+		FTransform Transform; // Ship transform
 	UPROPERTY()
 		float TimeCreated; // Time the move is created
 	UPROPERTY()

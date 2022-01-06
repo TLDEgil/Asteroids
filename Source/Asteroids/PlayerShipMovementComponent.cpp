@@ -32,12 +32,14 @@ void UPlayerShipMovementComponent::BeginPlay()
 void UPlayerShipMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	UpdateValues(DeltaTime);
-	LastMove = CreateMove(DeltaTime);
-	SimulateMove(LastMove);
-	ApplyMovement(LastMove);
-	ApplyRotation(LastMove);
+	if (GetOwnerRole() == ROLE_AutonomousProxy || GetOwner()->GetRemoteRole() == ROLE_SimulatedProxy)
+	{
+		UpdateValues(DeltaTime);
+		LastMove = CreateMove(DeltaTime);
+		SimulateMove(LastMove);
+		ApplyMovement(LastMove);
+		ApplyRotation(LastMove);
+	}
 }
 
 void UPlayerShipMovementComponent::UpdateValues(float DeltaTime)
@@ -80,18 +82,19 @@ FPlayerShipMove UPlayerShipMovementComponent::CreateMove(float DeltaTime)
 	FPlayerShipMove Move;
 	Move.TimeCreated = GetOwner()->GetWorld()->TimeSeconds;
 	Move.DeltaTime = DeltaTime;
-	Move.Location = GetOwner()->GetTransform();
+	Move.Transform = GetOwner()->GetTransform();
 	Move.PitchRate = CurrentPitchRate;
 	Move.YawRate = CurrentYawRate;
 	Move.RollRate = CurrentRollRate ;
-	Move.Throttle = Throttle;
+	Move.Thrust = EngineComponent->GetThrust();
+	Move.Velocity = Velocity;
 	return Move;
 }
 
 void UPlayerShipMovementComponent::SimulateMove(const FPlayerShipMove& Move)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Engine Thrust: %f"), EngineComponent->GetThrust());
-	FVector AppliedForce = GetOwner()->GetActorForwardVector() * EngineComponent->GetThrust();
+	//UE_LOG(LogTemp, Warning, TEXT("Engine Thrust: %f"), Move.Thrust);
+	FVector AppliedForce = GetOwner()->GetActorForwardVector() * Move.Thrust;
 	FVector Acceleration = AppliedForce / Cast<ABasePlayerShip>(GetOwner())->GetBaseMass();
 	Velocity += Acceleration * Move.DeltaTime;
 	ApplyRotation(Move);
