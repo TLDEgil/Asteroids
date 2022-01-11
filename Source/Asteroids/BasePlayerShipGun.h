@@ -7,6 +7,14 @@
 #include "BaseBullet.h"
 #include "BasePlayerShipGun.generated.h"
 
+USTRUCT()
+struct FBulletFireInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+		UPROPERTY()
+		float TimeCreated;
+};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ASTEROIDS_API UBasePlayerShipGun : public UActorComponent
@@ -50,17 +58,22 @@ private:
 	unsigned int NextBulletID = 0;
 
 	UPROPERTY(EditAnywhere)// Rate Of Fire, in rounds per minute
-		int ROF = 5000; 
-	float CurrentFireDelay = 0.0f; // Time left in seconds until the next round can be fired
-	float FireDelay = 1.0f; // How much time in seconds must pass betwen each round
+		int ROF = 300;  
+	// Time left in seconds until the next round can be fired
+	float CurrentFireDelay = 0.0f;
+	// How much time in seconds must pass betwen each round
+	float FireDelay = 1.0f; 
 
-	UPROPERTY(EditAnywhere)// Speed in M/s
-		float BulletSpeed = 100; 
+	UPROPERTY(EditAnywhere)
+		// Speed in M/s
+		float BulletSpeed = 300; 
 
-	UPROPERTY(EditAnywhere)// Damage
+	UPROPERTY(EditAnywhere)
+		// Damage
 		float BulletDamage = 100; 
 
-	UPROPERTY(EditAnywhere)// Range in KM
+	UPROPERTY(EditAnywhere)
+		// Range in KM
 		float BulletRange = 3; 
 
 

@@ -82,7 +82,7 @@ FPlayerShipMove UPlayerShipMovementComponent::CreateMove(float DeltaTime)
 	FPlayerShipMove Move;
 	Move.TimeCreated = GetOwner()->GetWorld()->TimeSeconds;
 	Move.DeltaTime = DeltaTime;
-	Move.Transform = GetOwner()->GetTransform();
+	Move.Transform = GetOwner()->GetActorTransform();
 	Move.PitchRate = CurrentPitchRate;
 	Move.YawRate = CurrentYawRate;
 	Move.RollRate = CurrentRollRate ;
@@ -97,6 +97,7 @@ void UPlayerShipMovementComponent::SimulateMove(const FPlayerShipMove& Move)
 	FVector AppliedForce = GetOwner()->GetActorForwardVector() * Move.Thrust;
 	FVector Acceleration = AppliedForce / Cast<ABasePlayerShip>(GetOwner())->GetBaseMass();
 	Velocity += Acceleration * Move.DeltaTime;
+	GetOwner()->SetActorLocation(Move.Transform.GetLocation());
 	ApplyRotation(Move);
 	ApplyMovement(Move);
 }

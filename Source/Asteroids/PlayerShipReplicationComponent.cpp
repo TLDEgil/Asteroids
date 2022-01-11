@@ -126,13 +126,15 @@ void UPlayerShipReplicationComponent::ClientTick(float DeltaTime)
 {
 	ClientTimeSinceLastRecievedUpdate += DeltaTime;
 
-	//if (ClientTimeBetweenLastUpdates < KINDA_SMALL_NUMBER) // make sure numbers will be 'resonably' large 
-	//	return; 
+	if (ClientTimeBetweenLastUpdates < KINDA_SMALL_NUMBER) // make sure numbers will be 'resonably' large 
+		return; 
 	if (MovementComponent == nullptr) // We need a movement component
 	{
 		UE_LOG(LogTemp, Error, TEXT("ReplicationComponent on %s has no valid MovementComponent"), *GetOwner()->GetName());
 		return;
 	}
+
+	UE_LOG(LogTemp, Display, TEXT("ReplicationComponent on %s has client ticked"), *GetOwner()->GetName());
 
 	FHermiteCubicSpline Spline; // Spline
 
@@ -140,6 +142,7 @@ void UPlayerShipReplicationComponent::ClientTick(float DeltaTime)
 	float LerpRatio = ClientTimeSinceLastRecievedUpdate / ClientTimeBetweenLastUpdates;
 	// Derivative ratio converted to meters
 	float VelocityToDerivative = ClientTimeBetweenLastUpdates * 100;
+	UE_LOG(LogTemp, Display, TEXT("ReplicationComponent on %s has Lerp: %f Velocity %f"), *GetOwner()->GetName(), LerpRatio, VelocityToDerivative);
 
 	CreateSpline(Spline, VelocityToDerivative);
 
